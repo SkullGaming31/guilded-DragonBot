@@ -1,0 +1,8 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": false,
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "editor.formatOnSave": true,
+  "notebook.formatOnSave.enabled": true,
+  "eslint.run": "onSave"
+}
