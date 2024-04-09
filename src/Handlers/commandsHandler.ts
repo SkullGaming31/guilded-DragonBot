@@ -6,7 +6,7 @@ import path from 'path';
 
 class CommandHandler {
 	private prefix: string;
-	private commands: Map<string, Command>;
+	public commands: Map<string, Command>;
 
 	constructor(prefix: string) {
 		this.prefix = prefix;
@@ -18,7 +18,7 @@ class CommandHandler {
 			console.error('Command is undefined or null');
 			return;
 		}
-		console.log('Registering command:', command.name);
+		// console.log('Registering command:', command);
 		this.commands.set(command.name.toLowerCase(), command);
 	}
 
@@ -53,26 +53,26 @@ class CommandHandler {
 	}
 
 	async getCommand(commandName: string): Promise<Command | undefined> {
-		console.log('Retrieving command:', commandName);
+		// console.log('Retrieving command:', commandName);
 		return this.commands.get(commandName.toLowerCase());
 	}
 
 	async handleCommand(message: Message, client: Client): Promise<void> {
 		const content = message.content.trim();
 
-		console.log('Processing message:', content); // Log the message content
+		// console.log('Processing message:', content); // Log the message content
 
 		if (!content.startsWith(this.prefix)) return;
 
 		const args = content.slice(this.prefix.length).split(/ +/);
 		const commandName = args.shift()?.toLowerCase();
 
-		console.log('Command name extracted from message:', commandName);
+		// console.log('Command name extracted from message:', commandName);
 
 		if (!commandName) return;
 
 		const command = await this.getCommand(commandName);
-		console.log('Retrieved command:', command);
+		// console.log('Retrieved command:', command);
 
 		if (!command) {
 			console.log('Command not found.');

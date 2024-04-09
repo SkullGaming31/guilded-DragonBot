@@ -1,34 +1,40 @@
-/* eslint-disable no-case-declarations */
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { config } from 'dotenv';
-config();
 import { Client } from './ExtendedClient';
-// import fs from 'fs';
 import { Collection } from 'guilded.js';
 import CommandHandler from './Handlers/commandsHandler';
 import EventHandler from './Handlers/eventsHandler';
+import Database from './Database';
+import { Command } from './Interface/Commands';
 
-const client = new Client({ token: process.env.TOKEN as string, });
-client.commands = new Collection();
+class DragonBot {
+	private client: Client;
+	private eventHandler: EventHandler;
+	private db: Database;
 
-// const handlerFiles = fs.readdirSync('./src/Handlers').filter(f => f.endsWith('.ts'));
+	constructor() {
+		config();
 
-// for (const handler of handlerFiles) {
-// 	import(path.resolve(`./src/Handlers/${handler}`))
-// 		.then(module => module.default(client)) // Call the imported module's default export function with client
-// 		.catch(error => console.error(`Error loading handler ${handler}:`, error)); // Handle errors
-// }
+		this.client = new Client({ token: process.env.TOKEN as string });
+		this.eventHandler = new EventHandler(this.client);
+		this.db = new Database(process.env.MONGO_URI as string);
+	}
 
-const eventHandler = new EventHandler(client);
+	public async start(): Promise<void> {
+		await this.loadHandlers();
+		await this.connect();
+		this.client.login();
+	}
 
-(async () => {
-	await eventHandler.loadEventsFromDirectory('./src/Events');
-	await CommandHandler.loadCommandsFromDirectory('./src/Commands');
-})();
+	private async loadHandlers(): Promise<void> {
+		await this.eventHandler.loadEventsFromDirectory('./src/Events');
+		await CommandHandler.loadCommandsFromDirectory('./src/Commands');
+		this.client.commands = new Collection<string, Command>(CommandHandler.commands);
+	}
 
-// const badWords = ['fuck', 'bitch', 'dick'];
-// const linkWhiteList = ['https://twitch.tv/', 'twitch.tv/', 'https://instagram.com/', 'instagram.com/', 'https://tiktok.com/@', 'tiktok.com/@'];
+	private async connect(): Promise<void> {
+		await this.db.connect();
+	}
+}
 
-client.on('error', (reason: string, err: Error) => { console.error(`Reason: ${reason}, Error ${err}:`); });
-
-client.login();
+const dragonBot = new DragonBot();
+dragonBot.start();
