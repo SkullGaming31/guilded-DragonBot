@@ -36,7 +36,7 @@ class CommandHandler {
 					const command = commandModule.default;
 					if (command && command.name) {
 						this.registerCommand(command);
-						console.log(`Loaded command: ${command.name}`);
+						console.log(`SYSTEM >> ${command.name} Command Loaded`);
 					} else {
 						console.error(`Failed to load command from file: ${filePath}`);
 					}

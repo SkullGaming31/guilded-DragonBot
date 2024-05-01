@@ -1,8 +1,9 @@
 import { Message } from 'guilded.js';
 import { Client } from '../../ExtendedClient';
 import CommandHandler from '../../Handlers/commandsHandler';
+import { Event } from '../../Handlers/eventsHandler';
 
-export default {
+const messageCreated: Event = {
 	name: 'messageCreated',
 	async execute(message: Message, client: Client) {
 		if (!message.author || message.author.type === 0 || message.author.id === client.user?.id) return;
@@ -10,3 +11,4 @@ export default {
 		console.log(`${message.author.name || 'Unknown User'} Said ${message.content}`);
 	}
 };
+export default messageCreated;

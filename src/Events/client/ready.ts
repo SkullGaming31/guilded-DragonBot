@@ -1,6 +1,7 @@
 import { Client } from '../../ExtendedClient';
+import { Event } from '../../Handlers/eventsHandler';
 
-export default {
+const readyEvent: Event = {
 	name: 'ready',
 	once: true,
 	async execute(client: Client) {
@@ -10,3 +11,4 @@ export default {
 		client.setStatus({ emoteId: 2293100, content: 'In Development', expiresAt: undefined });
 	}
 };
+export default readyEvent;

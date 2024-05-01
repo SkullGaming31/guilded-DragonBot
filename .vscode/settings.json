@@ -3,6 +3,11 @@
   "editor.insertSpaces": false,
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "editor.formatOnSave": true,
-  "notebook.formatOnSave.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.validate": [
+    "typescript"
+  ],
   "eslint.run": "onSave"
 }

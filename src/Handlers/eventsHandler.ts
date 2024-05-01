@@ -31,7 +31,7 @@ import path from 'path';
 import { ClientEvents } from 'guilded.js';
 import { Client } from '../ExtendedClient';
 
-interface Event {
+export interface Event {
   name: keyof ClientEvents;
   once?: boolean;
   execute(...args: any[]): Promise<void> | void;
